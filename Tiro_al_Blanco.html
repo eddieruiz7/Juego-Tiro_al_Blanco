@@ -1,0 +1,63 @@
+<canvas
+    width="600"
+    height="400">    
+</canvas>
+
+<script>
+
+    var pantalla = document.querySelector("canvas");
+    var pincel = pantalla.getContext("2d");
+
+    var radio = 10;
+    var x;
+    var y;
+
+    function dibujarCirculo(x,y,radio,color){
+        pincel.fillStyle = color;
+        pincel.beginPath();
+        pincel.arc(x, y, radio, 0, 2*3.14);
+        pincel.fill();
+    }
+
+    function clean(){
+        pincel.clearRect(0,0,600,400);
+    }
+
+    var pixel = 0;
+
+    function blanco(x,y){
+        dibujarCirculo(x,y,radio + 20,"red");
+        dibujarCirculo(x,y,radio + 10,"white");
+        dibujarCirculo(x,y,radio,"red");
+    }
+
+    function mostrarBlanco(maximo){
+        return Math.floor(Math.random()*maximo)
+    }
+    
+    function actualizarPantalla(){
+        clean();
+        pincel.fillStyle = "LightGrey";
+        pincel.fillRect(0,0,600,400);
+        xA = mostrarBlanco(600);
+        yA = mostrarBlanco(400);
+        blanco(xA,yA);
+        pixel++;
+    }
+
+    setInterval(actualizarPantalla,1200);
+
+    function disparo(evento){
+        var x = evento.pageX - pantalla.offsetLeft;
+        var y = evento.pageY - pantalla.offsetTop;
+
+        if((x < xA + radio)&&
+           (x > xA - radio)&&
+           (y < yA + radio)&&
+           (y > yA - radio)){
+            alert("En el BLANCO!!!");
+        }
+    }
+
+    pantalla.onclick = disparo;
+</script>    
